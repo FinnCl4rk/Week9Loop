@@ -4,60 +4,79 @@ import java.util.ArrayList;
 public class Main{
 
     static ArrayList<Integer> range = new ArrayList<>();
+    //static int[] range;
     static ArrayList<Integer> primeNums = new ArrayList<>();
+    static ArrayList<Integer> nonPrime = new ArrayList<>();
     public static int low;
     public static int high;
-    public static int range(int low, int high){
+    public static void range(int low, int high){
+        int i;
+        if (low >= high){
+            System.out.println("Error: lower-bound is larger than the upper-bound");
+        }else {
+            for(i = low; i <= high; i++){
+                range.add(i);
+            }
+            findPrimes(range);
+        }
+    }
+
+    public static boolean isPrime(int number) {
+    if (number < 1){
+        return false;
+    }
+    if (number <= 3){
+        return true;
+    }
+    if (number % 2 == 0 || number % 3 == 0){
+        return false;
+    }
+    for (int i = 5; i * i <= number; i += 6){
+        if (number % i == 0 || number % (i + 2) == 0){
+            return false;
+        }
+    }
+    return true;
+    }
+    public static ArrayList<Integer> findPrimes(ArrayList<Integer> numbers){
+        for (Integer number : numbers){
+            if(isPrime(number)){
+                primeNums.add(number);
+            }else {
+                nonPrime.add(number);
+            }
+        }return primeNums;
+    }
+    public static void printPrime(ArrayList<Integer> primeNums){
+        if (primeNums.isEmpty()){
+            System.out.print("{}");
+        }else {
+        System.out.print("{" + primeNums.get(0));
+        for (Integer integer : primeNums) {
+            System.out.print(", " + integer);
+        }
+        System.out.println("}");
+    }}
+    public static void printNonPrime(ArrayList<Integer> nonPrime){
+        if (nonPrime.isEmpty()){
+            System.out.print("{}");
+        }
+        System.out.print("{" + nonPrime.get(0));
+        for(Integer integer : nonPrime) {
+            System.out.print(", " + integer);
+        }
+        System.out.println("}");
+    }
+    public static void main(String[] args) {
         Scanner scan = new Scanner(System.in);
         System.out.println("Enter the lower-bound integer: ");
         low = Integer.parseInt(scan.nextLine());
         System.out.println("Enter the upper-bound integer: ");
         high = Integer.parseInt(scan.nextLine());
-        int i;
-        if (low >= high){
-            System.out.println("Error: lower-bound is larger than the upper-bound");
-
-        }else {
-            i = 1;
-            for(i = low; i <= high; i++){
-                range.add(i);
-                findPrime(range);
-            }
-        }
-        return range(low, high);
-    }
-
-    public static boolean findPrime(ArrayList<Integer> range) {
-        int i;
-        for (i = 0; i < range.get(i); ++i) {
-            if (range.get(i) <= 1) {
-                return false;
-            }
-            if (range.get(i) <= 3) {
-                primeNums.add(i);
-                return true;
-            }
-            if (range.get(i) % 2 == 0 || range.get(i) % 3 == 0) {
-                return false;
-            }
-            for (int x = 5; x * x <= range.get(i); x += 6) {
-                if (range.get(i) % x == 0 || range.get(i) % (x + 2) == 0) {
-                    return false;
-                }
-            }
-            primeNums.add(i);
-            return true;
-        }return false;
-    }
-    public static void printArray(ArrayList<Integer> primeNums){
-        System.out.print("{" + primeNums.get(0));
-        for (int x = 1; primeNums.size() > x; x++){
-            System.out.print(", " + primeNums.get(x));
-        }
-        System.out.println("}");
-    }
-    public static void main(String[] args) {
         range(low, high);
-        printArray(primeNums);
+        System.out.println("Prime numbers in the range provided are: ");
+        printPrime(primeNums);
+        System.out.println("And non prime numbers in the range provided are: ");
+        printNonPrime(nonPrime);
     }
 }
